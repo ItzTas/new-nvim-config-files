@@ -26,5 +26,10 @@ return {
             zsh = {},
             cs = { "csharpier" },
         },
+        formatters = {
+            ktfmt = {
+                prepend_args = { "--kotlinlang-style" },
+            },
+        },
     },
 }
