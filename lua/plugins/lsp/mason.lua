@@ -16,6 +16,7 @@ return {
             require("mason-lspconfig").setup({
                 ensure_installed = {
                     "lua_ls",
+                    "jsonls",
                     -- "eslintd",
                     -- "gopls",
                     -- "golangci_lint_ls",
