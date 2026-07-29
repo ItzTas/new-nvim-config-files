@@ -31,11 +31,11 @@ return {
 				end, opts)
 
 				vim.keymap.set("n", "[d", function()
-					vim.diagnostic.goto_next()
+					vim.diagnostic.jump({ count = 1, float = true })
 				end, opts)
 
 				vim.keymap.set("n", "]d", function()
-					vim.diagnostic.goto_prev()
+					vim.diagnostic.jump({ count = -1, float = true })
 				end, opts)
 
 				vim.keymap.set("n", "<leader>ca", function()

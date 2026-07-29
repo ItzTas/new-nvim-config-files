@@ -17,7 +17,7 @@ do
                 trouble.next()
                 trouble.jump()
             else
-                vim.diagnostic.goto_next()
+                vim.diagnostic.jump({ count = 1, float = true })
             end
         end)
 
@@ -26,7 +26,7 @@ do
                 trouble.prev()
                 trouble.jump()
             else
-                vim.diagnostic.goto_prev()
+                vim.diagnostic.jump({ count = -1, float = true })
             end
         end)
     end
