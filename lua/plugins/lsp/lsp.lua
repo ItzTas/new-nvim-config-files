@@ -191,6 +191,55 @@ return {
 				},
 			})
 
+			-- tailwindcss-language-server bundles Tailwind v4, but UnoCSS presetWind3 projects
+			-- compile with v3 semantics: its canonical-class renames (break-words ->
+			-- wrap-break-word, etc.) generate no CSS there, silently, with no build error.
+			-- Drop that one rule on UnoCSS-only roots; cssConflict stays on, it is correct
+			-- for both engines.
+			local function has_unocss(root)
+				return #vim.fn.glob(root .. "/uno.config.*", false, true) > 0
+			end
+
+			local function has_tailwind(root)
+				-- v3 keeps a config file; v4 is CSS-first, so the dependency is the tell
+				if #vim.fn.glob(root .. "/tailwind.config.*", false, true) > 0 then
+					return true
+				end
+				local manifest = root .. "/package.json"
+				if vim.fn.filereadable(manifest) == 0 then
+					return false
+				end
+				local ok, pkg = pcall(vim.json.decode, table.concat(vim.fn.readfile(manifest), "\n"))
+				if not ok or type(pkg) ~= "table" then
+					return true -- unreadable manifest: assume Tailwind, keep the rule on
+				end
+				for _, field in ipairs({ "dependencies", "devDependencies", "peerDependencies" }) do
+					if type(pkg[field]) == "table" and pkg[field].tailwindcss then
+						return true
+					end
+				end
+				return false
+			end
+
+			vim.lsp.config("tailwindcss", {
+				-- declared up front so before_init can mutate it in place: the client copies
+				-- config.settings by reference at creation, *before* before_init runs, so
+				-- reassigning it there (as :h vim.lsp.ClientConfig suggests) is a no-op
+				settings = { tailwindCSS = { lint = {} } },
+				before_init = function(_, config)
+					local root = config.root_dir
+					if not root then
+						return
+					end
+					-- both engines present: we cannot tell which one compiles this file,
+					-- so leave the rule on rather than hide a legitimate rename
+					if not has_unocss(root) or has_tailwind(root) then
+						return
+					end
+					config.settings.tailwindCSS.lint.suggestCanonicalClasses = "ignore"
+				end,
+			})
+
 			local vue_language_server_path = vim.fn.stdpath("data")
 				.. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
 
