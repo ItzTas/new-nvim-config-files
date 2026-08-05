@@ -43,6 +43,9 @@ vim.opt.wrap = true
 vim.g.python3_host_prog = vim.fn.expand("~/.virtualenvs/neovim/bin/python3")
 vim.g.molten_kernel = "python3"
 
+-- disable the built-in ftplugin/sql.vim omni-completion <C-C>… insert maps
+vim.g.omni_sql_no_default_maps = 1
+
 
 if vim.g.started_by_firevim then
     vim.opt.laststatus = 0
