@@ -17,6 +17,8 @@ return {
                 ensure_installed = {
                     "lua_ls",
                     "jsonls",
+                    "vtsls",
+                    "cssmodules_ls",
                     -- "eslintd",
                     -- "gopls",
                     -- "golangci_lint_ls",
@@ -30,7 +32,6 @@ return {
                     -- "docker_compose_language_service",
                     -- "dockerls",
                 },
-                automatic_installation = true,
                 automatic_enable = false,
             })
         end,

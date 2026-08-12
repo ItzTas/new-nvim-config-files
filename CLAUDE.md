@@ -64,8 +64,10 @@ Plain modules returning an `M` table, required by name (e.g. `require("functions
 - `lsp.lua` — the core: `lsp-zero` + `nvim-cmp` + `LuaSnip`. Servers are turned on with a single
   `vim.lsp.enable({ ... })` list; per-server overrides use `vim.lsp.config("<name>", { ... })`.
   LSP keymaps (`gd`, `K`, `<leader>ca`, `<leader>rn`, …) are defined in the `lsp_attach` callback.
-- `mason.lua` — `mason` + `mason-lspconfig` (relies on `automatic_installation`; the
-  `ensure_installed` list is mostly commented out). `mason-null-ls` is `enabled = false`.
+- `mason.lua` — `mason` + `mason-lspconfig`. Servers must be listed in `ensure_installed`
+  to be installed — `automatic_installation` was removed in mason-lspconfig v2, so a server
+  merely enabled in `lsp.lua` but absent from Mason fails with "<name> is not executable".
+  `mason-null-ls` is `enabled = false`.
 - `conform.lua` — formatters per filetype (the source of truth for formatting).
 - `null-ls.lua` (none-ls) — extra diagnostics/code-actions; only loaded via the disabled
   mason-null-ls spec, so effectively dormant.
