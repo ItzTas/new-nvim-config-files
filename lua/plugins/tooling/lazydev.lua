@@ -7,10 +7,14 @@ return {
 				-- See the configuration section for more details
 				-- Load luvit types when the `vim.uv` word is found
 				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+				-- Load the wezterm types when `require("wezterm")` is found
+				-- (~/.config/wezterm), lazydev appends the plugin's `lua/` itself
+				{ path = "wezterm-types", mods = { "wezterm" } },
 			},
 		},
 	},
 	{ "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+	{ "DrKJeff16/wezterm-types", version = false, lazy = true }, -- WezTerm config typings
 	{ -- optional completion source for require statements and module annotations
 		"hrsh7th/nvim-cmp",
 		opts = function(_, opts)
